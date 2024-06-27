@@ -27,16 +27,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 public class ArticleController {
 
-    @Autowired
+    @Autowired(required = false)
     ArticleRepository articleRepository;
 
-    @Autowired
+    @Autowired(required = false)
     PopularArticleRepository popularArticleRepository;
 
-    @Autowired
+    @Autowired(required = false)
     CategoryRepository categoryRepository;
 
-    @Autowired
+    @Autowired(required = false)
     SavedArticleRepository savedArticleRepository;
 
     @Operation(summary = "Get list of all articles")
@@ -122,4 +122,11 @@ public class ArticleController {
         return new ArticleStateResponse(article_id, saved);
     }
 
+    @Operation(summary = "Get daily article")
+    @GetMapping("/article/daily")
+    public Article getDailyArticle(
+            @Parameter(description = "day index") @RequestParam int dayIndex
+    ) {
+        return articleRepository.findAll().get(dayIndex);
+    }
 }
